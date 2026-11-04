@@ -1,0 +1,42 @@
+[
+  {
+    "question": "Which overdue requests still have departmental searches open?",
+    "command": "overdue"
+  },
+  {
+    "question": "Which requests have documents waiting for an officer review?",
+    "command": "review-queue"
+  },
+  {
+    "question": "Which departments hold the largest open backlog?",
+    "command": "department-load"
+  },
+  {
+    "question": "Which request deadlines have no recorded basis?",
+    "command": "compliance"
+  },
+  {
+    "question": "Which open requests have no recorded work for fourteen days?",
+    "command": "stale"
+  },
+  {
+    "question": "Which searches are late and who owns them?",
+    "command": "search-queue"
+  },
+  {
+    "question": "Which requests consumed the most recorded work minutes?",
+    "command": "time-summary"
+  },
+  {
+    "question": "Which extension notices were recorded after the previous deadline?",
+    "command": "compliance"
+  },
+  {
+    "question": "Which imported closed requests lack response evidence?",
+    "command": "compliance"
+  },
+  {
+    "question": "Who recorded each deadline change and review decision?",
+    "command": "request"
+  }
+]

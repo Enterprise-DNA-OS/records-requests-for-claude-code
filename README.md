@@ -1,115 +1,121 @@
-<h1 align="center">Records Requests for Claude Code</h1>
+# Records Requests for Claude Code
 
-<p align="center">
-  <strong>The open-source records request desk that is just a database and Claude Code.</strong>
-</p>
+Know which information requests are late, which departmental searches are still open, and which documents await an officer's decision. Keep the history in a database you own.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+## Three ways to own it
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your NextRequest data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=nextrequest">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/nextrequest?utm_source=github&utm_medium=readme&utm_campaign=nextrequest">How it works</a></td>
-  </tr>
-</table>
+- **Do it yourself:** use the free MIT-licensed base with Claude Code, Codex, OpenCode or Cursor. Hosting, an agent subscription and your time are separate costs.
+- **We customise it:** Enterprise DNA maps your NextRequest export, changes fields and rules, connects existing systems, and builds a web front end or another stack when you need one. One setup fee, then a retainer for ongoing work.
+- **We run it for you:** Omni by Enterprise DNA installs the system, sets up access and backups, prepares reviews and maintains it. One setup fee, then a retainer.
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-nextrequest">Instead of NextRequest</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+[Book a 30-minute call with Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=nextrequest).
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
+## Run the synthetic demo
 
----
+Node 20 or newer. No cloud account is required.
 
-## What is this
-
-Records Requests for Claude Code does the job you pay NextRequest for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the NextRequest dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays NextRequest per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=nextrequest).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
-
-```bash
-git clone https://github.com/Enterprise-DNA-OS/records-requests-for-claude-code.git
-cd records-requests-for-claude-code
+```sh
 npm install
+npm test
 npm run demo
+npm run requests -- deadline-desk
+npm run requests -- request --request=DEMO-101 --json
+npm run requests -- compliance
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The invented demo has an overdue request, a late search, an outstanding review, a missing deadline and stale work. It contains no real requester details or documents. Repeated seeding preserves edits. Use a new DATA_DIR without seed data for real work.
 
-### Use it with your own Postgres or Supabase
+## What you own
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+A request register, departmental search tasks, a document inventory, officer review outcomes, extension notices, response evidence, work minutes and append-only activity. Original due dates survive extensions. Imports retain the complete original CSV, selected mapping and every extra field. Imported deadlines stay unreviewed until an officer confirms their basis. Imported closures are flagged when response evidence is absent.
 
-## The commands
+The CLI rejects closure while searches or document reviews remain open. A full-release outcome cannot contain a withheld or redacted record. It records a response already sent by an officer. It does not send, release files or calculate legal deadlines. Document hashes and reviewed-copy references describe evidence held elsewhere.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+The useful replacement here is the internal information-request desk. NextRequest also supplies public intake, requester communications, redaction and disclosure tools. This base has no public portal, document redaction engine, email delivery, payment collection, authenticated multi-user access or statutory calendar. Scope those separately before replacing a live agency service.
 
-| Command | What it does |
+## Recurring jobs
+
+| Command | Purpose |
 |---|---|
-| `/...` | ... |
+| /help | List the supported commands and flags. |
+| /requests | Read the request register. |
+| /request | Read one request and all its evidence. |
+| /deadline-desk | Review deadlines, open searches and outstanding reviews. |
+| /overdue | Find requests past their recorded response date. |
+| /search-queue | Chase outstanding departmental searches. |
+| /review-queue | Read the documents awaiting an officer decision. |
+| /stale | Find open requests without recorded work for over fourteen days. |
+| /department-load | Compare open and overdue requests by department. |
+| /time-summary | Read recorded work minutes by request. |
+| /compliance | Check deadline evidence, late notices and unverified closures. |
+| /activity | Read the append-only operational history. |
+| /add-request | Record an incoming request. |
+| /set-deadline | Confirm a deadline and its legal or policy basis. |
+| /assign-search | Assign a scoped departmental search. |
+| /complete-search | Record the completed search and its evidence. |
+| /add-record | Register a document reference, page count and checksum. |
+| /review-record | Record an authorised document review outcome. |
+| /extend | Record an extension notice already issued outside this tool. |
+| /record-response | Record a response already sent and close its request. |
+| /log-time | Record work minutes without calculating a charge. |
+| /log-note | Record progress with a named actor. |
+| /import | Validate and import a NextRequest Requests Report CSV. |
+| /export | Write a complete private snapshot to a new file. |
+| /weekly-review | Draft the weekly review from three current reports. |
+| /draft-ack | Draft an acknowledgement for internal review. |
+| /draft-search | Draft a departmental search instruction. |
+| /draft-response | Draft an internal response working sheet. |
+| /customise | Change a field or rule with a tested migration. |
+| /new-view | Add a branded read-only report. |
 
-## Instead of NextRequest
+28 CLI commands and 30 slash commands. CLI flags use --name=value and all commands accept --json. /customise and /new-view are agent recipes.
 
-<!-- TODO(author): how to bring data across from NextRequest; link docs/replace-nextrequest.md -->
+## Ten questions your records answer
 
-## Architecture
+1. Which overdue requests still have departmental searches open? (`overdue`)
+2. Which requests have documents waiting for an officer review? (`review-queue`)
+3. Which departments hold the largest open backlog? (`department-load`)
+4. Which request deadlines have no recorded basis? (`compliance`)
+5. Which open requests have no recorded work for fourteen days? (`stale`)
+6. Which searches are late and who owns them? (`search-queue`)
+7. Which requests consumed the most recorded work minutes? (`time-summary`)
+8. Which extension notices were recorded after the previous deadline? (`compliance`)
+9. Which imported closed requests lack response evidence? (`compliance`)
+10. Who recorded each deadline change and review decision? (`request`)
 
-```
-records-requests-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+These are working analyses, not an unsupported claim that NextRequest cannot answer them. The difference is that you can join your evidence and change your own rules.
 
-## Built for coding agents
+## Your first hour: ten things to ask for
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+1. Put our organisation's name and colours in brand.json.
+2. Show the requests past their recorded deadlines.
+3. Show every open search and its owner.
+4. Show documents that still need a review.
+5. Draft the Monday desk review.
+6. Read one request's full evidence history.
+7. Test our NextRequest CSV with explicit date and status mapping.
+8. Compare imported counts and deadlines with NextRequest.
+9. Add our internal team code with a tested migration.
+10. Export a private snapshot before changing our rules.
 
-## Contributing
+## Switch from NextRequest
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+[The replace guide](docs/replace-nextrequest.md) follows CivicPlus's Requests Report export and documents the exact mapping. Import is one command after selecting and checking the report columns. Repeating an identical import is a no-op. Changed rows for an existing request are rejected to protect live work. The fixture is synthetic, not a captured customer export. Test an actual agency export before switching.
 
-## Want it installed and run for you?
+## Documents and views
 
-Enterprise DNA installs Records Requests for Claude Code for your business, migrates your NextRequest data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+Edit brand.json and run npm run view for the deadline desk, department workload and evidence checks. npm run docs writes branded request summaries, search instruction sheets and document review schedules to private HTML. These are internal working papers, not release packs. [Why no front end](docs/why-no-front-end.md) explains the screen and mobile limits.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=nextrequest)
-- Read more: [enterprisedna.co/omni/instead-of/nextrequest](https://enterprisedna.co/omni/instead-of/nextrequest?utm_source=github&utm_medium=readme&utm_campaign=nextrequest)
+## Compliance and operations
 
-## License
+[Compliance checks](docs/compliance.md) link to NZ official information guidance. They identify missing evidence, missed dates, late extension notices and unverified closures. Officers determine applicable law, legal deadlines, withholding grounds, complaint rights and retention. No legal certification or automatic redaction is provided.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+All domain tables enable row-level security and remove PUBLIC privileges. This is a trusted owner-connection tool, not a multi-tenant service. Restrict OS and database access. Protect exports, drafts and reports. Native database backups remain necessary. The complete JSON export is a portable snapshot; restore is reviewed maintenance, not an automated command.
+
+npm test uses a disposable database and output folder. It tests every CLI command, import rollback, duplicate handling, deadline history, closure rules, evidence immutability and HTML escaping. CI is configured for Windows and Ubuntu with Node 20 and 22, plus PostgreSQL 16. TEST_DATABASE_URL must name an empty disposable database.
+
+## Research and licence
+
+[Research](docs/research.md) records the candidate scores, actual public-agency spending evidence and buyer-fit limits. The vendor publishes no numeric list price on the reviewed pricing route. MIT licence. Copyright 2026 Enterprise DNA. NextRequest belongs to CivicPlus. This independent implementation contains no vendor code or assets.

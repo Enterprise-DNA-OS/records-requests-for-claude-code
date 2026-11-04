@@ -5,14 +5,11 @@ node_modules/
 !.env.example
 drafts/*
 !drafts/.gitkeep
+views/*.html
+docs-out/
+imports/
+exports/
+private-*
 *.log
 .DS_Store
 Thumbs.db
-views/*.html
-docs-out/
-feeds/
-
-# Private exports and import staging files
-exports/
-imports/
-private-*.json

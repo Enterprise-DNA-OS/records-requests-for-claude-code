@@ -1,11 +1,54 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "request-summary",
+    "title": "Request summary: internal working paper",
+    "for_each": "SELECT id,number FROM requests ORDER BY number",
+    "file": "number",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Request",
+        "layout": "record",
+        "sql": "SELECT number,summary,received_on,original_due,due_on,deadline_basis,jurisdiction,department,owner,state FROM requests WHERE id=$1"
+      },
+      {
+        "title": "Response evidence",
+        "sql": "SELECT outcome,reason,authority,complaint_notice,sent_on,evidence,actor FROM responses WHERE request_id=$1"
+      },
+      {
+        "title": "Extensions",
+        "sql": "SELECT old_due,new_due,reason,authority,notified_on,notice_ref,actor FROM extensions WHERE request_id=$1"
+      }
+    ]
+  },
+  {
+    "name": "search-instruction",
+    "title": "Departmental search instruction: internal draft",
+    "for_each": "SELECT id,number FROM requests ORDER BY number",
+    "file": "number",
+    "sections": [
+      {
+        "title": "Scope",
+        "layout": "record",
+        "sql": "SELECT number,summary,owner FROM requests WHERE id=$1"
+      },
+      {
+        "title": "Searches and evidence",
+        "sql": "SELECT department,owner,scope,due_on,completed_on,result,evidence FROM search_tasks WHERE request_id=$1 ORDER BY due_on,id",
+        "note": "Record sources searched and results, including a no-records result. Return documents for review. This sheet authorises no disclosure."
+      }
+    ]
+  },
+  {
+    "name": "review-schedule",
+    "title": "Document review schedule: internal working paper",
+    "for_each": "SELECT id,number FROM requests ORDER BY number",
+    "file": "number",
+    "sections": [
+      {
+        "title": "Review decisions",
+        "sql": "SELECT d.reference,d.description,d.pages,v.disposition,v.authority,v.reason,v.reviewed_copy,v.actor FROM records d LEFT JOIN reviews v ON v.record_id=d.id WHERE d.request_id=$1 ORDER BY d.reference",
+        "note": "Source references and review notes are internal. An officer inspects the actual files and approves the response separately."
+      }
     ]
   }
 ]

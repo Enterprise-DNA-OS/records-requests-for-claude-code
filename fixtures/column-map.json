@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "number": "Request Number",
+    "summary": "Request Text",
+    "received": "Date Received",
+    "due": "Due Date",
+    "status": "Status",
+    "department": "Department",
+    "owner": "Staff"
+  },
+  "statuses": {"Open": "open", "Closed": "closed"}
+}

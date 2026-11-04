@@ -1,13 +1,40 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Records Requests for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Records request deadline desk",
+    "subtitle": "Internal working report",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Deadlines and unfinished work",
+        "sql": "SELECT number,summary,owner,due_on,days_left,searches_open,reviews_open FROM deadline_desk ORDER BY due_on NULLS FIRST,number"
+      },
+      {
+        "title": "Departmental searches",
+        "sql": "SELECT number,department,owner,scope,due_on FROM search_queue ORDER BY due_on,number"
+      }
+    ]
+  },
+  {
+    "name": "departments",
+    "title": "Department workload",
+    "sections": [
+      {
+        "title": "Open requests",
+        "sql": "SELECT department,count(*)::integer AS open_requests,count(*) FILTER(WHERE due_on<current_date)::integer AS overdue FROM requests WHERE state='open' GROUP BY department ORDER BY department"
+      }
+    ]
+  },
+  {
+    "name": "evidence",
+    "title": "Request evidence review",
+    "sections": [
+      {
+        "title": "Review findings",
+        "sql": "SELECT number,rule,finding FROM compliance_findings ORDER BY number,rule"
+      },
+      {
+        "title": "Documents awaiting review",
+        "sql": "SELECT number,reference,description,pages FROM review_queue ORDER BY number,reference"
       }
     ]
   }
